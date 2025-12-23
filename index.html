@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Naše Vianoce</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Patrick+Hand&display=swap" rel="stylesheet">
+    <style>
+        /* 🌲 ZÁKLAD 🌲 */
+        :root {
+            --gold: #d4af37;
+            --green: #0f2b20;
+            --burgundy: #900000;
+            --text-light: #ecf0f1;
+        }
+
+        body { 
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(circle at top, #1a4a36 0%, #05140e 100%);
+            color: var(--text-light);
+            text-align: center; 
+            margin: 0; 
+            padding: 0;
+            padding-bottom: 160px; 
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ❄️ SNEŽENIE ❄️ */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 0;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 1em;
+            user-select: none;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        @keyframes fall { to { transform: translateY(105vh); } }
+
+        h1 { 
+            font-family: 'Patrick Hand', cursive; 
+            color: var(--gold); 
+            margin-top: 30px;
+            margin-bottom: 10px; 
+            font-size: 3rem; 
+            text-shadow: 0px 4px 10px rgba(0,0,0,0.8);
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 🎅 SANTA FOTKA 🎅 */
+        .santa-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            z-index: 2;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+
+        .santa-frame {
+            width: 100%;            
+            aspect-ratio: 3 / 2;    
+            border: 4px solid var(--gold); 
+            border-radius: 15px; 
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6); 
+            background-color: #000;
+        }
+        
+        .santa-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            display: block;
+        }
+
+        /* TEXT POD FOTKOU */
+        .hero-text {
+            margin-top: 25px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-text p {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .hero-text h2 {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin: 10px 0 5px 0; 
+            line-height: 1.1;
+        }
+        .hero-text .date {
+            font-size: 1.2rem;
+            color: #fff;
+            font-weight: 800;
+            background: var(--burgundy);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* GRID AKTIVÍT */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 15px; 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .card { 
+            background: rgba(255, 255, 255, 0.95); 
+            border-radius: 12px; 
+            padding: 15px 10px; 
+            cursor: pointer; 
+            border: 3px solid transparent; 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            aspect-ratio: 1 / 1; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:active { transform: scale(0.95); }
+
+        .card .emoji { 
+            font-size: 3.5rem; 
+            margin-bottom: 10px; 
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+        }
+        
+        .card .label { 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem; 
+            font-weight: 800; 
+            color: #2c3e50; 
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        /* ✨ VYBRANÝ STAV ✨ */
+        .card.selected { 
+            border-color: var(--burgundy);
+            background-color: #fff0f0; 
+            box-shadow: 0 0 15px var(--burgundy);
+            transform: translateY(-5px);
+        }
+        .card.selected .label { color: var(--burgundy); }
+        .card.selected::after {
+            content: '❤️'; 
+            position: absolute;
+            top: 5px; right: 5px;
+            font-size: 18px;
+        }
+
+        /* 🎬 ANIMÁCIE 🎬 */
+        @keyframes heartbeat { 0% { transform: scale(1); } 15% { transform: scale(1.3); } 30% { transform: scale(1); } 45% { transform: scale(1.3); } 100% { transform: scale(1); } }
+        .anim-heartbeat .emoji { animation: heartbeat 1.5s infinite; }
+
+        @keyframes sway { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg); } 75% { transform: rotate(-10deg); } 100% { transform: rotate(0deg); } }
+        .anim-sway .emoji { animation: sway 2s infinite ease-in-out; }
+
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .anim-bounce .emoji { animation: bounce 0.8s infinite; }
+
+        @keyframes mystery { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
+        .anim-mystery .emoji { animation: mystery 3s infinite ease-in-out; }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .anim-spin .emoji { animation: spin 2s infinite linear; }
+
+        @keyframes snap { 0% { transform: scale(1); } 50% { transform: scale(0.8) rotate(-5deg); } 75% { transform: scale(1.1) rotate(5deg); } 100% { transform: scale(1); } }
+        .anim-snap .emoji { animation: snap 1s infinite; }
+
+        @keyframes throw { 0% { transform: translate(0, 0); } 20% { transform: translate(-5px, 5px); } 40% { transform: translate(0, 0); } 100% { transform: translate(10px, -10px); } }
+        .anim-throw .emoji { animation: throw 1s infinite; }
+
+        @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+        .anim-shake .emoji { animation: shake 0.8s infinite; }
+        
+        @keyframes draw { 0% { transform: rotate(0deg) translateX(0); } 25% { transform: rotate(10deg) translateX(5px); } 75% { transform: rotate(-10deg) translateX(-5px); } 100% { transform: rotate(0deg) translateX(0); } }
+        .anim-draw .emoji { animation: draw 1s infinite linear; }
+
+
+        /* 🚀 PLÁVAJÚCA LIŠTA 🚀 */
+        .floating-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 43, 32, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 2px solid var(--gold);
+            padding: 15px 20px;
+            z-index: 100;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+        }
+
+        .status-text {
+            color: var(--gold);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            min-height: 1.2em;
+        }
+
+        .bar-content {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .counter-bubble {
+            background: #fff;
+            color: var(--green);
+            font-weight: 800;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            min-width: 60px;
+        }
+
+        #send-btn {
+            flex-grow: 1;
+            background-color: var(--burgundy); 
+            color: var(--gold); 
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 50px; 
+            cursor: pointer;
+            opacity: 0.5;
+            pointer-events: none; 
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        #send-btn.active {
+            opacity: 1;
+            pointer-events: auto;
+            background: linear-gradient(45deg, #900000, #b00000);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); 
+            animation: btnPulse 2s infinite;
+        }
+
+        @keyframes btnPulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); align-items: center; justify-content: center; }
+        .modal-content { background-color: var(--green); padding: 40px; border: 2px solid var(--gold); border-radius: 20px; text-align: center; max-width: 90%; }
+        .modal h2 { color: var(--gold); font-family: 'Montserrat'; font-weight: 800; font-size: 1.8rem; margin: 0; text-transform: uppercase; }
+        .modal p { font-size: 1.1rem; margin-top: 15px; line-height: 1.6; }
+        .genius-text { color: #fff; font-size: 1.2rem; font-style: italic; margin-top: 10px; display: block; }
+
+    </style>
+</head>
+<body>
+
+    <div class="snowflake" style="left: 10%; animation-duration: 10s; opacity: 0.5;">❄</div>
+    <div class="snowflake" style="left: 20%; animation-duration: 12s; opacity: 0.3;">❅</div>
+    <div class="snowflake" style="left: 50%; animation-duration: 8s; opacity: 0.6;">❆</div>
+    <div class="snowflake" style="left: 70%; animation-duration: 15s; opacity: 0.4;">❄</div>
+    <div class="snowflake" style="left: 90%; animation-duration: 9s; opacity: 0.5;">❅</div>
+
+    <h1>Vianočný Výber</h1>
+    
+    <div class="santa-container">
+        <div class="santa-frame">
+            <img src="santa.jpg" alt="Santa Marek" onerror="this.style.display='none';">
+        </div>
+    </div>
+
+    <div class="hero-text">
+        <p>Vyber si 5 aktivít na</p>
+        <h2>NAŠE VIANOCE</h2>
+        <div class="date">28. - 29. December</div>
+    </div>
+    
+    <div class="grid" id="grid"></div>
+
+    <div class="floating-bar">
+        <div class="status-text" id="status-text">Začni vyberať, Santa čaká... 🎅</div>
+        <div class="bar-content">
+            <div class="counter-bubble"><span id="count">0</span>/5</div>
+            <button id="send-btn" onclick="odoslatEmail()">Potvrdiť</button>
+        </div>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div style="font-size: 4rem; margin-bottom: 20px;">🥂</div>
+            <h2>Odoslané!</h2>
+            <p>Marek bol informovaný.</p>
+            <span class="genius-text">"Bože to je génius ten Marek!"</span>
+            <p style="font-size: 0.8rem; color: #aaa; margin-top: 30px;">(Môžeš zavrieť stránku)</p>
+        </div>
+    </div>
+
+<script>
+    // URL pre Formspree (v tomto móde sa nepoužije, ale nechávam ho tu pre budúcnosť)
+    const formspreeUrl = "https://formspree.io/f/mlgronln"; 
+
+    const hlasky = [
+        "Začni vyberať, Santa čaká... 🎅",        
+        "Dobrý štart! Ešte 4.",                 
+        "Hmm, toto znie dobre... Ešte 3.",      
+        "Ešte 2! Marek je veľkorysý a sexy! 😎", 
+        "Už len posledná chuťovka...",          
+        "PERFEKTNÉ! Teraz to odošli 🔥"          
+    ];
+
+    const aktivity = [
+        { text: "Seriál / Film", icon: "🎬", anim: "anim-bounce" },
+        { text: "Magic the Gathering", icon: "🔮", anim: "anim-mystery" }, 
+        { text: "Spoločné pečenie", icon: "🍪", anim: "anim-spin" },
+        { text: "Zimná prechádzka", icon: "❄️", anim: "anim-sway" },
+        { text: "Durak", icon: "🃏", anim: "anim-snap" },
+        { text: "Čaj o piatej", icon: "🍵", anim: "anim-sway" },
+        { text: "PC hry (Co-op)", icon: "🎮", anim: "anim-shake" },
+        { text: "Masáž", icon: "💆‍♂️", anim: "anim-heartbeat" },
+        { text: "Intímny večer", icon: "💋", anim: "anim-heartbeat" },
+        { text: "Varené víno", icon: "🍷", anim: "anim-sway" },
+        
+        { text: "Ochutnávka naslepo", icon: "🫣", anim: "anim-shake" },
+        { text: "Kreslenie sa navzájom", icon: "🎨", anim: "anim-draw" },
+        { text: "Puzzle", icon: "🧩", anim: "anim-snap" },
+        { text: "Pomalý tanec", icon: "💃", anim: "anim-sway" },
+        { text: "Raňajky do postele", icon: "🥐", anim: "anim-bounce" },
+        { text: "Čokoládové fondue", icon: "🍫🍓", anim: "anim-mystery" },
+        { text: "Riešenie Detektívky", icon: "🕵️‍♀️", anim: "anim-mystery" },
+        { text: "Skladanie Lega", icon: "🧱", anim: "anim-snap" },
+        { text: "Šípky", icon: "🎯", anim: "anim-throw" },
+        { text: "Sviečky & Relax", icon: "🪔", anim: "anim-sway" }
+    ];
+
+    const selected = new Set();
+    const grid = document.getElementById('grid');
+    const countSpan = document.getElementById('count');
+    const statusText = document.getElementById('status-text');
+    const btn = document.getElementById('send-btn');
+    const modal = document.getElementById('modal');
+
+    aktivity.forEach(akt => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `<div class="emoji">${akt.icon}</div><div class="label">${akt.text}</div>`;
+        div.onclick = () => toggle(div, akt);
+        grid.appendChild(div);
+    });
+
+    function toggle(div, akt) {
+        if (selected.has(akt.text)) {
+            selected.delete(akt.text);
+            div.classList.remove('selected');
+            div.classList.remove(akt.anim);
+        } else {
+            if (selected.size < 5) {
+                selected.add(akt.text);
+                div.classList.add('selected');
+                div.classList.add(akt.anim);
+            } else {
+                statusText.style.color = "#ff4444";
+                statusText.innerText = "Len 5! Musíš niečo vyhodiť 😈";
+                setTimeout(() => { statusText.style.color = "var(--gold)"; updateUI(); }, 1500);
+                return;
+            }
+        }
+        updateUI();
+    }
+
+    function updateUI() {
+        const count = selected.size;
+        countSpan.innerText = count;
+        statusText.innerText = hlasky[count];
+
+        if (count === 5) {
+            btn.classList.add('active');
+            btn.innerText = "ODOSLAŤ";
+        } else {
+            btn.classList.remove('active');
+            btn.innerText = "POTVRDIŤ";
+        }
+    }
+
+    function odoslatEmail() {
+        if (selected.size !== 5) return;
+        btn.innerText = "Odosielam...";
+        
+        // --- DUMMY MÓD (Simulácia pre lokálne použitie) ---
+        // Len ukážeme modal po 1.5 sekunde akože sa niečo deje
+        setTimeout(() => {
+            modal.style.display = "flex";
+            btn.innerText = "ODOSLAŤ"; // Reset textu
+        }, 1500);
+    }
+</script>
+
+</body>
+</html>
