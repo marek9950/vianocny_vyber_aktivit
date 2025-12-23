@@ -2,324 +2,431 @@
 <html lang="sk">
 <head>
     <meta charset="UTF-8">
-    <title>Marekov ULTIMATE Deckbuilder v6.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Naše Vianoce</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&family=Patrick+Hand&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #1e1e1e; color: #eee; margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        /* 🌲 ZÁKLAD 🌲 */
+        :root {
+            --gold: #d4af37;
+            --green: #0f2b20;
+            --burgundy: #900000;
+            --text-light: #ecf0f1;
+        }
+
+        body { 
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(circle at top, #1a4a36 0%, #05140e 100%);
+            color: var(--text-light);
+            text-align: center; 
+            margin: 0; 
+            padding: 0;
+            padding-bottom: 160px; 
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ❄️ SNEŽENIE ❄️ */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 0;
+            color: rgba(255, 255, 255, 0.1);
+            font-size: 1em;
+            user-select: none;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        @keyframes fall { to { transform: translateY(105vh); } }
+
+        h1 { 
+            font-family: 'Patrick Hand', cursive; 
+            color: var(--gold); 
+            margin-top: 30px;
+            margin-bottom: 10px; 
+            font-size: 3rem; 
+            text-shadow: 0px 4px 10px rgba(0,0,0,0.8);
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 🎅 SANTA FOTKA 🎅 */
+        .santa-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            z-index: 2;
+            padding: 0 15px;
+            box-sizing: border-box;
+        }
+
+        .santa-frame {
+            width: 100%;            
+            aspect-ratio: 3 / 2;    
+            border: 4px solid var(--gold); 
+            border-radius: 15px; 
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6); 
+            background-color: #000;
+        }
         
-        /* ĽAVÁ STRANA - POOL */
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        .santa-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            display: block;
+        }
+
+        /* TEXT POD FOTKOU */
+        .hero-text {
+            margin-top: 25px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-text p {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .hero-text h2 {
+            font-family: 'Patrick Hand', cursive;
+            font-size: 2.8rem;
+            color: var(--gold);
+            margin: 10px 0 5px 0; 
+            line-height: 1.1;
+        }
+        .hero-text .date {
+            font-size: 1.2rem;
+            color: #fff;
+            font-weight: 800;
+            background: var(--burgundy);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* GRID AKTIVÍT */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 15px; 
+            max-width: 900px; 
+            margin: 0 auto; 
+            padding: 0 15px;
+            position: relative;
+            z-index: 2;
+        }
         
-        /* DASHBOARD - Štatistiky hore */
-        .stats-dashboard {
-            background-color: #2d2d2d;
-            padding: 10px 20px;
-            border-bottom: 2px solid #444;
+        .card { 
+            background: rgba(255, 255, 255, 0.95); 
+            border-radius: 12px; 
+            padding: 15px 10px; 
+            cursor: pointer; 
+            border: 3px solid transparent; 
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            aspect-ratio: 1 / 1; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:active { transform: scale(0.95); }
+
+        .card .emoji { 
+            font-size: 3.5rem; 
+            margin-bottom: 10px; 
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.2));
+        }
+        
+        .card .label { 
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem; 
+            font-weight: 800; 
+            color: #2c3e50; 
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        /* ✨ VYBRANÝ STAV ✨ */
+        .card.selected { 
+            border-color: var(--burgundy);
+            background-color: #fff0f0; 
+            box-shadow: 0 0 15px var(--burgundy);
+            transform: translateY(-5px);
+        }
+        .card.selected .label { color: var(--burgundy); }
+        .card.selected::after {
+            content: '❤️'; 
+            position: absolute;
+            top: 5px; right: 5px;
+            font-size: 18px;
+        }
+
+        /* 🎬 ANIMÁCIE 🎬 */
+        @keyframes heartbeat { 0% { transform: scale(1); } 15% { transform: scale(1.3); } 30% { transform: scale(1); } 45% { transform: scale(1.3); } 100% { transform: scale(1); } }
+        .anim-heartbeat .emoji { animation: heartbeat 1.5s infinite; }
+
+        @keyframes sway { 0% { transform: rotate(0deg); } 25% { transform: rotate(10deg); } 75% { transform: rotate(-10deg); } 100% { transform: rotate(0deg); } }
+        .anim-sway .emoji { animation: sway 2s infinite ease-in-out; }
+
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .anim-bounce .emoji { animation: bounce 0.8s infinite; }
+
+        @keyframes mystery { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } }
+        .anim-mystery .emoji { animation: mystery 3s infinite ease-in-out; }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .anim-spin .emoji { animation: spin 2s infinite linear; }
+
+        @keyframes snap { 0% { transform: scale(1); } 50% { transform: scale(0.8) rotate(-5deg); } 75% { transform: scale(1.1) rotate(5deg); } 100% { transform: scale(1); } }
+        .anim-snap .emoji { animation: snap 1s infinite; }
+
+        @keyframes throw { 0% { transform: translate(0, 0); } 20% { transform: translate(-5px, 5px); } 40% { transform: translate(0, 0); } 100% { transform: translate(10px, -10px); } }
+        .anim-throw .emoji { animation: throw 1s infinite; }
+
+        @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
+        .anim-shake .emoji { animation: shake 0.8s infinite; }
+        
+        @keyframes draw { 0% { transform: rotate(0deg) translateX(0); } 25% { transform: rotate(10deg) translateX(5px); } 75% { transform: rotate(-10deg) translateX(-5px); } 100% { transform: rotate(0deg) translateX(0); } }
+        .anim-draw .emoji { animation: draw 1s infinite linear; }
+
+
+        /* 🚀 PLÁVAJÚCA LIŠTA 🚀 */
+        .floating-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(15, 43, 32, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 2px solid var(--gold);
+            padding: 15px 20px;
+            z-index: 100;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+        }
+
+        .status-text {
+            color: var(--gold);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            min-height: 1.2em;
+        }
+
+        .bar-content {
+            display: flex;
+            width: 100%;
+            max-width: 600px;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 100;
+            gap: 15px;
         }
-        .stat-group { display: flex; gap: 15px; }
-        .stat-item { font-size: 0.9em; background: #383838; padding: 5px 10px; border-radius: 5px; border: 1px solid #444; }
-        .stat-val { font-weight: bold; font-size: 1.1em; color: #fff; }
-        .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
 
-        /* SCROLLOVATEĽNÁ OBLASŤ KARIET */
-        .scroll-area { flex: 1; overflow-y: auto; padding: 20px; }
-
-        /* PRAVÁ STRANA - DECKLIST (Fixná) */
-        .sidebar { 
-            width: 300px; 
-            background-color: #252525; 
-            border-left: 2px solid #444; 
-            display: flex; flex-direction: column;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        .counter-bubble {
+            background: #fff;
+            color: var(--green);
+            font-weight: 800;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            min-width: 60px;
         }
-        
-        .sidebar-header { padding: 15px; background-color: #333; border-bottom: 1px solid #555; }
-        .sidebar-content { flex: 1; overflow-y: auto; padding: 10px; }
-        
-        /* ZOZNAM KARIET */
-        ul { list-style: none; padding: 0; margin: 0; }
-        li { padding: 4px 0; border-bottom: 1px solid #3a3a3a; font-size: 0.85em; display: flex; justify-content: space-between; align-items: center; }
-        .mana-badge { background: #444; border-radius: 50%; width: 20px; height: 20px; display: flex; justify-content: center; align-items: center; font-size: 10px; color: #aaa; }
 
-        /* MANA KRIVKA (V sidebare) */
-        .curve-container { display: flex; align-items: flex-end; height: 60px; gap: 3px; margin-top: 10px; }
-        .curve-bar { flex: 1; background-color: #007bff; min-height: 2px; transition: height 0.3s; border-radius: 2px 2px 0 0; }
-        .curve-labels { display: flex; justify-content: space-between; font-size: 9px; color: #888; margin-top: 2px; }
-        
-        /* TLAČIDLO COPY */
-        .copy-btn {
-            width: 100%; padding: 15px; background-color: #00ff00; color: #000; border: none; font-weight: bold; cursor: pointer; font-size: 1.1em;
-            transition: background 0.2s;
+        #send-btn {
+            flex-grow: 1;
+            background-color: var(--burgundy); 
+            color: var(--gold); 
+            border: none;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 50px; 
+            cursor: pointer;
+            opacity: 0.5;
+            pointer-events: none; 
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        .copy-btn:hover { background-color: #00cc00; }
 
-        /* KARTY V POOLE */
-        .pool-container { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding-bottom: 40px; }
-        .color-section { 
-            background-color: #2a2a2a; padding: 10px; border-radius: 8px; margin-bottom: 15px;
-            border-top: 4px solid #555; width: 100%;
+        #send-btn.active {
+            opacity: 1;
+            pointer-events: auto;
+            background: linear-gradient(45deg, #900000, #b00000);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); 
+            animation: btnPulse 2s infinite;
         }
-        .color-section h2 { margin-top: 0; font-size: 1em; border-bottom: 1px solid #444; color: #ddd; }
-        
-        .card-img { width: 85px; height: auto; border-radius: 4px; cursor: pointer; border: 3px solid transparent; opacity: 0.6; transition: 0.1s; }
-        .card-img:hover { transform: scale(1.1); z-index: 10; opacity: 1; }
-        .card-img.selected { border: 3px solid #00ff00; opacity: 1; box-shadow: 0 0 10px #00ff00; }
 
-        /* Farby sekcií */
-        .white { border-color: #f0f2c0; } .blue { border-color: #aae0fa; }
-        .black { border-color: #cbc2bf; } .red { border-color: #f9aa8f; }
-        .green { border-color: #9bd3ae; } .artifact { border-color: #c0c0c0; }
+        @keyframes btnPulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 200; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); align-items: center; justify-content: center; }
+        .modal-content { background-color: var(--green); padding: 40px; border: 2px solid var(--gold); border-radius: 20px; text-align: center; max-width: 90%; }
+        .modal h2 { color: var(--gold); font-family: 'Montserrat'; font-weight: 800; font-size: 1.8rem; margin: 0; text-transform: uppercase; }
+        .modal p { font-size: 1.1rem; margin-top: 15px; line-height: 1.6; }
+        .genius-text { color: #fff; font-size: 1.2rem; font-style: italic; margin-top: 10px; display: block; }
+
     </style>
 </head>
 <body>
 
-    <div class="main-content">
-        
-        <div class="stats-dashboard">
-            <div class="stat-group">
-                <div class="stat-item" style="border-color: #aaa;">Bytosti: <span class="stat-val" id="cnt-creature">0</span></div>
-                <div class="stat-item" style="border-color: #666;">Kúzla: <span class="stat-val" id="cnt-non">0</span></div>
-            </div>
-            
-            <div class="stat-group">
-                <div class="stat-item"><span class="dot" style="background:#f0f2c0"></span><span class="stat-val" id="cnt-w">0</span></div>
-                <div class="stat-item"><span class="dot" style="background:#aae0fa"></span><span class="stat-val" id="cnt-u">0</span></div>
-                <div class="stat-item"><span class="dot" style="background:#cbc2bf"></span><span class="stat-val" id="cnt-b">0</span></div>
-                <div class="stat-item"><span class="dot" style="background:#f9aa8f"></span><span class="stat-val" id="cnt-r">0</span></div>
-                <div class="stat-item"><span class="dot" style="background:#9bd3ae"></span><span class="stat-val" id="cnt-g">0</span></div>
-            </div>
-        </div>
+    <div class="snowflake" style="left: 10%; animation-duration: 10s; opacity: 0.5;">❄</div>
+    <div class="snowflake" style="left: 20%; animation-duration: 12s; opacity: 0.3;">❅</div>
+    <div class="snowflake" style="left: 50%; animation-duration: 8s; opacity: 0.6;">❆</div>
+    <div class="snowflake" style="left: 70%; animation-duration: 15s; opacity: 0.4;">❄</div>
+    <div class="snowflake" style="left: 90%; animation-duration: 9s; opacity: 0.5;">❅</div>
 
-        <div class="scroll-area">
-            <div class="pool-container">
-                
-                <div class="color-section white">
-                    <h2>Biela</h2>
-                    <img src="https://api.scryfall.com/cards/named?exact=Serra%20Angel&format=image" class="card-img" data-name="Serra Angel" data-cmc="5" data-type="c" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Pacifism&format=image" class="card-img" data-name="Pacifism" data-cmc="2" data-type="n" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Pacifism&format=image" class="card-img" data-name="Pacifism" data-cmc="2" data-type="n" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Swords%20to%20Plowshares&format=image" class="card-img" data-name="Swords to Plowshares" data-cmc="1" data-type="n" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Savannah%20Lions&format=image" class="card-img" data-name="Savannah Lions" data-cmc="1" data-type="c" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Day%20of%20Judgment&format=image" class="card-img" data-name="Day of Judgment" data-cmc="4" data-type="n" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Youthful%20Knight&format=image" class="card-img" data-name="Youthful Knight" data-cmc="2" data-type="c" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Griffin%20Sentinel&format=image" class="card-img" data-name="Griffin Sentinel" data-cmc="3" data-type="c" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Inspired%20Charge&format=image" class="card-img" data-name="Inspired Charge" data-cmc="4" data-type="n" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Raise%20the%20Alarm&format=image" class="card-img" data-name="Raise the Alarm" data-cmc="2" data-type="n" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Oblivion%20Ring&format=image" class="card-img" data-name="Oblivion Ring" data-cmc="3" data-type="n" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Elite%20Vanguard&format=image" class="card-img" data-name="Elite Vanguard" data-cmc="1" data-type="c" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Elite%20Vanguard&format=image" class="card-img" data-name="Elite Vanguard" data-cmc="1" data-type="c" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Master%20Decoy&format=image" class="card-img" data-name="Master Decoy" data-cmc="2" data-type="c" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Paladin%20en-Vec&format=image" class="card-img" data-name="Paladin en-Vec" data-cmc="3" data-type="c" data-color="w" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Disenchant&format=image" class="card-img" data-name="Disenchant" data-cmc="2" data-type="n" data-color="w" onclick="ts(this)">
-                </div>
-
-                <div class="color-section blue">
-                    <h2>Modrá</h2>
-                    <img src="https://api.scryfall.com/cards/named?exact=Counterspell&format=image" class="card-img" data-name="Counterspell" data-cmc="2" data-type="n" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Unsummon&format=image" class="card-img" data-name="Unsummon" data-cmc="1" data-type="n" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Unsummon&format=image" class="card-img" data-name="Unsummon" data-cmc="1" data-type="n" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Divination&format=image" class="card-img" data-name="Divination" data-cmc="3" data-type="n" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Wind%20Drake&format=image" class="card-img" data-name="Wind Drake" data-cmc="3" data-type="c" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Wind%20Drake&format=image" class="card-img" data-name="Wind Drake" data-cmc="3" data-type="c" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Air%20Elemental&format=image" class="card-img" data-name="Air Elemental" data-cmc="5" data-type="c" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Mahamoti%20Djinn&format=image" class="card-img" data-name="Mahamoti Djinn" data-cmc="6" data-type="c" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Merfolk%20Looter&format=image" class="card-img" data-name="Merfolk Looter" data-cmc="2" data-type="c" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Essence%20Scatter&format=image" class="card-img" data-name="Essence Scatter" data-cmc="2" data-type="n" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Claustrophobia&format=image" class="card-img" data-name="Claustrophobia" data-cmc="3" data-type="n" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Augur%20of%20Bolas&format=image" class="card-img" data-name="Augur of Bolas" data-cmc="2" data-type="c" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Cloudkin%20Seer&format=image" class="card-img" data-name="Cloudkin Seer" data-cmc="3" data-type="c" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Negate&format=image" class="card-img" data-name="Negate" data-cmc="2" data-type="n" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Into%20the%20Roil&format=image" class="card-img" data-name="Into the Roil" data-cmc="2" data-type="n" data-color="u" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Clone&format=image" class="card-img" data-name="Clone" data-cmc="4" data-type="c" data-color="u" onclick="ts(this)">
-                </div>
-
-                <div class="color-section black">
-                    <h2>Čierna</h2>
-                    <img src="https://api.scryfall.com/cards/named?exact=Murder&format=image" class="card-img" data-name="Murder" data-cmc="3" data-type="n" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Murder&format=image" class="card-img" data-name="Murder" data-cmc="3" data-type="n" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Gravedigger&format=image" class="card-img" data-name="Gravedigger" data-cmc="4" data-type="c" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Sign%20in%20Blood&format=image" class="card-img" data-name="Sign in Blood" data-cmc="2" data-type="n" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Vampire%20Nighthawk&format=image" class="card-img" data-name="Vampire Nighthawk" data-cmc="3" data-type="c" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Doom%20Blade&format=image" class="card-img" data-name="Doom Blade" data-cmc="2" data-type="n" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Sengir%20Vampire&format=image" class="card-img" data-name="Sengir Vampire" data-cmc="5" data-type="c" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Typhoid%20Rats&format=image" class="card-img" data-name="Typhoid Rats" data-cmc="1" data-type="c" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Typhoid%20Rats&format=image" class="card-img" data-name="Typhoid Rats" data-cmc="1" data-type="c" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Mind%20Rot&format=image" class="card-img" data-name="Mind Rot" data-cmc="3" data-type="n" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Nekrataal&format=image" class="card-img" data-name="Nekrataal" data-cmc="4" data-type="c" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Duress&format=image" class="card-img" data-name="Duress" data-cmc="1" data-type="n" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Hypnotic%20Specter&format=image" class="card-img" data-name="Hypnotic Specter" data-cmc="3" data-type="c" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Reassembling%20Skeleton&format=image" class="card-img" data-name="Reassembling Skeleton" data-cmc="2" data-type="c" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Dead%20Weight&format=image" class="card-img" data-name="Dead Weight" data-cmc="1" data-type="n" data-color="b" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Ravenous%20Rats&format=image" class="card-img" data-name="Ravenous Rats" data-cmc="2" data-type="c" data-color="b" onclick="ts(this)">
-                </div>
-
-                <div class="color-section red">
-                    <h2>Červená</h2>
-                    <img src="https://api.scryfall.com/cards/named?exact=Lightning%20Bolt&format=image" class="card-img" data-name="Lightning Bolt" data-cmc="1" data-type="n" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Lightning%20Bolt&format=image" class="card-img" data-name="Lightning Bolt" data-cmc="1" data-type="n" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Shock&format=image" class="card-img" data-name="Shock" data-cmc="1" data-type="n" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Shock&format=image" class="card-img" data-name="Shock" data-cmc="1" data-type="n" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Goblin%20Piker&format=image" class="card-img" data-name="Goblin Piker" data-cmc="2" data-type="c" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Shivan%20Dragon&format=image" class="card-img" data-name="Shivan Dragon" data-cmc="6" data-type="c" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Act%20of%20Treason&format=image" class="card-img" data-name="Act of Treason" data-cmc="3" data-type="n" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Fireball&format=image" class="card-img" data-name="Fireball" data-cmc="1" data-type="n" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Kird%20Ape&format=image" class="card-img" data-name="Kird Ape" data-cmc="1" data-type="c" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Dragon%20Fodder&format=image" class="card-img" data-name="Dragon Fodder" data-cmc="2" data-type="n" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Dragon%20Fodder&format=image" class="card-img" data-name="Dragon Fodder" data-cmc="2" data-type="n" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Young%20Pyromancer&format=image" class="card-img" data-name="Young Pyromancer" data-cmc="2" data-type="c" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Lightning%20Strike&format=image" class="card-img" data-name="Lightning Strike" data-cmc="2" data-type="n" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Goblin%20Guide&format=image" class="card-img" data-name="Goblin Guide" data-cmc="1" data-type="c" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Trumpet%20Blast&format=image" class="card-img" data-name="Trumpet Blast" data-cmc="3" data-type="n" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Pyroclasm&format=image" class="card-img" data-name="Pyroclasm" data-cmc="2" data-type="n" data-color="r" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Raging%20Goblin&format=image" class="card-img" data-name="Raging Goblin" data-cmc="1" data-type="c" data-color="r" onclick="ts(this)">
-                </div>
-
-                <div class="color-section green">
-                    <h2>Zelená</h2>
-                    <img src="https://api.scryfall.com/cards/named?exact=Llanowar%20Elves&format=image" class="card-img" data-name="Llanowar Elves" data-cmc="1" data-type="c" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Llanowar%20Elves&format=image" class="card-img" data-name="Llanowar Elves" data-cmc="1" data-type="c" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Giant%20Growth&format=image" class="card-img" data-name="Giant Growth" data-cmc="1" data-type="n" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Giant%20Growth&format=image" class="card-img" data-name="Giant Growth" data-cmc="1" data-type="n" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Colossal%20Dreadmaw&format=image" class="card-img" data-name="Colossal Dreadmaw" data-cmc="6" data-type="c" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Cultivate&format=image" class="card-img" data-name="Cultivate" data-cmc="3" data-type="n" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Birds%20of%20Paradise&format=image" class="card-img" data-name="Birds of Paradise" data-cmc="1" data-type="c" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Rampant%20Growth&format=image" class="card-img" data-name="Rampant Growth" data-cmc="2" data-type="n" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Leatherback%20Baloth&format=image" class="card-img" data-name="Leatherback Baloth" data-cmc="3" data-type="c" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Overrun&format=image" class="card-img" data-name="Overrun" data-cmc="5" data-type="n" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Prey%20Upon&format=image" class="card-img" data-name="Prey Upon" data-cmc="1" data-type="n" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Acidic%20Slime&format=image" class="card-img" data-name="Acidic Slime" data-cmc="5" data-type="c" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Elvish%20Mystic&format=image" class="card-img" data-name="Elvish Mystic" data-cmc="1" data-type="c" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Craw%20Wurm&format=image" class="card-img" data-name="Craw Wurm" data-cmc="6" data-type="c" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Fog&format=image" class="card-img" data-name="Fog" data-cmc="1" data-type="n" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Grizzly%20Bears&format=image" class="card-img" data-name="Grizzly Bears" data-cmc="2" data-type="c" data-color="g" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Grizzly%20Bears&format=image" class="card-img" data-name="Grizzly Bears" data-cmc="2" data-type="c" data-color="g" onclick="ts(this)">
-                </div>
-                
-                <div class="color-section artifact">
-                    <h2>Artefakty</h2>
-                    <img src="https://api.scryfall.com/cards/named?exact=Bonesplitter&format=image" class="card-img" data-name="Bonesplitter" data-cmc="1" data-type="n" data-color="a" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Icy%20Manipulator&format=image" class="card-img" data-name="Icy Manipulator" data-cmc="4" data-type="n" data-color="a" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Mind%20Stone&format=image" class="card-img" data-name="Mind Stone" data-cmc="2" data-type="n" data-color="a" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Howling%20Mine&format=image" class="card-img" data-name="Howling Mine" data-cmc="2" data-type="n" data-color="a" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Ornithopter&format=image" class="card-img" data-name="Ornithopter" data-cmc="0" data-type="c" data-color="a" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Loxodon%20Warhammer&format=image" class="card-img" data-name="Loxodon Warhammer" data-cmc="3" data-type="n" data-color="a" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Evolving%20Wilds&format=image" class="card-img" data-name="Evolving Wilds" data-cmc="0" data-type="n" data-color="a" onclick="ts(this)">
-                    <img src="https://api.scryfall.com/cards/named?exact=Terramorphic%20Expanse&format=image" class="card-img" data-name="Terramorphic Expanse" data-cmc="0" data-type="n" data-color="a" onclick="ts(this)">
-                </div>
-            </div>
+    <h1>Vianočný Výber</h1>
+    
+    <div class="santa-container">
+        <div class="santa-frame">
+            <img src="santa.jpg" alt="Santa Marek" onerror="this.style.display='none';">
         </div>
     </div>
 
-    <div class="sidebar">
-        <div class="sidebar-header">
-            <h3 style="margin:0; color:#fff;">Tvoj Balík (<span id="count">0</span>/23)</h3>
-            
-            <div class="curve-container">
-                <div class="curve-bar" id="c1-bar" style="height: 0%;"></div>
-                <div class="curve-bar" id="c2-bar" style="height: 0%;"></div>
-                <div class="curve-bar" id="c3-bar" style="height: 0%;"></div>
-                <div class="curve-bar" id="c4-bar" style="height: 0%;"></div>
-                <div class="curve-bar" id="c5-bar" style="height: 0%;"></div>
-                <div class="curve-bar" id="c6-bar" style="height: 0%;"></div>
-            </div>
-            <div class="curve-labels">
-                <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6+</span>
-            </div>
-        </div>
-        
-        <div class="sidebar-content">
-            <ul id="decklist">
-                <li style="color:#666; font-style:italic;">Zatiaľ prázdne...</li>
-            </ul>
-        </div>
+    <div class="hero-text">
+        <p>Vyber si 5 aktivít na</p>
+        <h2>NAŠE VIANOCE</h2>
+        <div class="date">28. - 29. December</div>
+    </div>
+    
+    <div class="grid" id="grid"></div>
 
-        <button class="copy-btn" onclick="copyToClipboard()">SKOPÍROVAŤ ZOZNAM 📋</button>
+    <div class="floating-bar">
+        <div class="status-text" id="status-text">Začni vyberať, Santa čaká... 🎅</div>
+        <div class="bar-content">
+            <div class="counter-bubble"><span id="count">0</span>/5</div>
+            <button id="send-btn" onclick="odoslatEmail()">Potvrdiť</button>
+        </div>
     </div>
 
-    <script>
-        function ts(el) {
-            el.classList.toggle('selected');
-            updateUI();
-        }
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <div style="font-size: 4rem; margin-bottom: 20px;">🥂</div>
+            <h2>Odoslané!</h2>
+            <p>Marek bol informovaný.</p>
+            <span class="genius-text">"Bože to je génius ten Marek!"</span>
+            <p style="font-size: 0.8rem; color: #aaa; margin-top: 30px;">(Môžeš zavrieť stránku)</p>
+        </div>
+    </div>
 
-        function updateUI() {
-            const selected = Array.from(document.querySelectorAll('.card-img.selected'));
-            const listEl = document.getElementById('decklist');
-            const countEl = document.getElementById('count');
-            
-            // 1. Zrátaj typy a farby
-            let creatures = 0;
-            let noncreatures = 0;
-            let colors = { w:0, u:0, b:0, r:0, g:0 };
-            let curve = {1:0, 2:0, 3:0, 4:0, 5:0, 6:0};
+<script>
+    // URL pre Formspree (v tomto móde sa nepoužije, ale nechávam ho tu pre budúcnosť)
+    const formspreeUrl = "https://formspree.io/f/mlgronln"; 
 
-            selected.forEach(card => {
-                // Typy
-                if(card.dataset.type === 'c') creatures++; else noncreatures++;
-                
-                // Farby
-                if(colors[card.dataset.color] !== undefined) colors[card.dataset.color]++;
+    const hlasky = [
+        "Začni vyberať, Santa čaká... 🎅",        
+        "Dobrý štart! Ešte 4.",                 
+        "Hmm, toto znie dobre... Ešte 3.",      
+        "Ešte 2! Marek je veľkorysý a sexy! 😎", 
+        "Už len posledná chuťovka...",          
+        "PERFEKTNÉ! Teraz to odošli 🔥"          
+    ];
 
-                // Krivka
-                let cmc = parseInt(card.dataset.cmc);
-                if (cmc < 1) cmc = 1; 
-                if (cmc > 6) cmc = 6;
-                curve[cmc]++;
-            });
+    const aktivity = [
+        { text: "Seriál / Film", icon: "🎬", anim: "anim-bounce" },
+        { text: "Magic the Gathering", icon: "🔮", anim: "anim-mystery" }, 
+        { text: "Spoločné pečenie", icon: "🍪", anim: "anim-spin" },
+        { text: "Zimná prechádzka", icon: "❄️", anim: "anim-sway" },
+        { text: "Durak", icon: "🃏", anim: "anim-snap" },
+        { text: "Čaj o piatej", icon: "🍵", anim: "anim-sway" },
+        { text: "PC hry (Co-op)", icon: "🎮", anim: "anim-shake" },
+        { text: "Masáž", icon: "💆‍♂️", anim: "anim-heartbeat" },
+        { text: "Intímny večer", icon: "💋", anim: "anim-heartbeat" },
+        { text: "Varené víno", icon: "🍷", anim: "anim-sway" },
+        
+        { text: "Ochutnávka naslepo", icon: "🫣", anim: "anim-shake" },
+        { text: "Kreslenie sa navzájom", icon: "🎨", anim: "anim-draw" },
+        { text: "Puzzle", icon: "🧩", anim: "anim-snap" },
+        { text: "Pomalý tanec", icon: "💃", anim: "anim-sway" },
+        { text: "Raňajky do postele", icon: "🥐", anim: "anim-bounce" },
+        { text: "Čokoládové fondue", icon: "🍫🍓", anim: "anim-mystery" },
+        { text: "Riešenie Detektívky", icon: "🕵️‍♀️", anim: "anim-mystery" },
+        { text: "Skladanie Lega", icon: "🧱", anim: "anim-snap" },
+        { text: "Šípky", icon: "🎯", anim: "anim-throw" },
+        { text: "Sviečky & Relax", icon: "🪔", anim: "anim-sway" }
+    ];
 
-            // 2. Aktualizuj Dashboard
-            document.getElementById('cnt-creature').innerText = creatures;
-            document.getElementById('cnt-non').innerText = noncreatures;
-            document.getElementById('cnt-w').innerText = colors.w;
-            document.getElementById('cnt-u').innerText = colors.u;
-            document.getElementById('cnt-b').innerText = colors.b;
-            document.getElementById('cnt-r').innerText = colors.r;
-            document.getElementById('cnt-g').innerText = colors.g;
+    const selected = new Set();
+    const grid = document.getElementById('grid');
+    const countSpan = document.getElementById('count');
+    const statusText = document.getElementById('status-text');
+    const btn = document.getElementById('send-btn');
+    const modal = document.getElementById('modal');
 
-            // 3. Aktualizuj Počítadlo celkovo
-            countEl.innerText = selected.length;
-            countEl.style.color = (selected.length > 23) ? 'red' : '#fff';
+    aktivity.forEach(akt => {
+        const div = document.createElement('div');
+        div.className = 'card';
+        div.innerHTML = `<div class="emoji">${akt.icon}</div><div class="label">${akt.text}</div>`;
+        div.onclick = () => toggle(div, akt);
+        grid.appendChild(div);
+    });
 
-            // 4. Sortovanie pre Decklist
-            selected.sort((a, b) => parseInt(a.dataset.cmc) - parseInt(b.dataset.cmc));
-
-            // 5. Vykreslenie zoznamu
-            listEl.innerHTML = '';
-            if (selected.length === 0) listEl.innerHTML = '<li style="color:#666; font-style:italic;">Zatiaľ prázdne...</li>';
-
-            selected.forEach(card => {
-                const li = document.createElement('li');
-                li.innerHTML = `<span>${card.dataset.name}</span> <span class="mana-badge">${card.dataset.cmc}</span>`;
-                listEl.appendChild(li);
-            });
-
-            // 6. Aktualizácia grafu
-            let max = Math.max(...Object.values(curve));
-            if(max === 0) max = 1;
-            for(let i=1; i<=6; i++) {
-                document.getElementById(`c${i}-bar`).style.height = (curve[i] / max * 100) + '%';
+    function toggle(div, akt) {
+        if (selected.has(akt.text)) {
+            selected.delete(akt.text);
+            div.classList.remove('selected');
+            div.classList.remove(akt.anim);
+        } else {
+            if (selected.size < 5) {
+                selected.add(akt.text);
+                div.classList.add('selected');
+                div.classList.add(akt.anim);
+            } else {
+                statusText.style.color = "#ff4444";
+                statusText.innerText = "Len 5! Musíš niečo vyhodiť 😈";
+                setTimeout(() => { statusText.style.color = "var(--gold)"; updateUI(); }, 1500);
+                return;
             }
         }
+        updateUI();
+    }
 
-        function copyToClipboard() {
-            const selected = Array.from(document.querySelectorAll('.card-img.selected'));
-            selected.sort((a, b) => parseInt(a.dataset.cmc) - parseInt(b.dataset.cmc));
-            
-            let text = "Môj balík (" + selected.length + " kariet):\n";
-            selected.forEach(card => {
-                text += `1x ${card.dataset.name}\n`;
-            });
-            text += "\n+ Základné landy";
+    function updateUI() {
+        const count = selected.size;
+        countSpan.innerText = count;
+        statusText.innerText = hlasky[count];
 
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Zoznam skopírovaný! Vlož ho do chatu.");
-            });
+        if (count === 5) {
+            btn.classList.add('active');
+            btn.innerText = "ODOSLAŤ";
+        } else {
+            btn.classList.remove('active');
+            btn.innerText = "POTVRDIŤ";
         }
-    </script>
+    }
+
+    function odoslatEmail() {
+        if (selected.size !== 5) return;
+        btn.innerText = "Odosielam...";
+        
+        // --- DUMMY MÓD (Simulácia pre lokálne použitie) ---
+        // Len ukážeme modal po 1.5 sekunde akože sa niečo deje
+        setTimeout(() => {
+            modal.style.display = "flex";
+            btn.innerText = "ODOSLAŤ"; // Reset textu
+        }, 1500);
+    }
+</script>
 
 </body>
 </html>
