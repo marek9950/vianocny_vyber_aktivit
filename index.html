@@ -658,33 +658,14 @@
         btn.innerText = "Elf už beží za Marekom...";
         btn.classList.add('loading');
         
-        const zoznam = Array.from(selected).join(", ");
-        
-        // --- OSTRÁ VERZIA (ODOSLANIE NA FORMSPREE) ---
-        fetch(formspreeUrl, {
-            method: "POST",
-            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                Predmet: "🎄 Vianočný výber (28. Dec)",
-                Aktivity: zoznam,
-                Cas: new Date().toLocaleString('sk-SK')
-            })
-        }).then(res => {
-            if (res.ok) {
-                isSubmitted = true; // ZAMKNE APLIKÁCIU
-                modal.style.display = "flex";
-                btn.style.display = "none";
-                statusText.innerText = "Odoslané! ❤️";
-            } else {
-                alert("Jaj! Elf zakopol (Chyba odosielania). Skús to prosím znova.");
-                btn.innerText = "ODOSLAŤ";
-                btn.classList.remove('loading');
-            }
-        }).catch(error => {
-            alert("Chyba pripojenia. Skontroluj internet.");
-            btn.innerText = "ODOSLAŤ";
-            btn.classList.remove('loading');
-        });
+        // --- DUMMY MÓD (SIMULÁCIA) ---
+        // POUŽÍVAJ LEN NA TESTOVANIE!
+        setTimeout(() => {
+            isSubmitted = true; // ZAMKNE APLIKÁCIU
+            modal.style.display = "flex";
+            btn.style.display = "none";
+            statusText.innerText = "Odoslané! ❤️";
+        }, 2000); 
     }
 </script>
 
